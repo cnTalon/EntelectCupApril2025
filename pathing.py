@@ -9,6 +9,7 @@ def paths(zoo):
     paths = []
     fed = set()
 
+    # sorts by priority, then distance if priority is the same
     for enc in sorted(zoo.enclosures, key = lambda e: (-e[3], distance(zoo.depot[:2], e[:2]))):
         if (enc[0], enc[1], enc[2]) in fed:     # checks if enclosure is fed
             continue
