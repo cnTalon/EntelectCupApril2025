@@ -1,8 +1,9 @@
 class Zoo:
-    def __init__(self,size,depot,storages,enclosures,deadzones):
+    def __init__(self,size,depot, capacity, storages,enclosures,deadzones):
         self.size = size
         self.depot = depot
         self.storages = storages
+        self.capacity = capacity
         self.enclosures = enclosures
         self.deadzones = deadzones
         

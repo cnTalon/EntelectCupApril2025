@@ -1,6 +1,6 @@
 from zoo import Zoo
 from pathing import *
-with open("1.txt", 'r') as f:
+with open("2.txt", 'r') as f:
     lines = [line.strip() for line in f.readlines() if line.strip()]
     storages = []
     enclosures = []
@@ -42,10 +42,7 @@ with open("1.txt", 'r') as f:
                 dz = clean.split(',')
                 deadzones.append([int(dz[0]), int(dz[1]), int(dz[2])])
                 
-zoo = Zoo(size, depot, storages, enclosures, deadzones)
-path = paths(zoo)
-str = path.__str__()[2:-2]
-str = str.replace("[","(")
-str = str.replace("]",")")
-with open("submission.txt",'w') as f:
-    f.write(f"[[{str}]]")
+zoo = Zoo(size, depot, capacity, storages, enclosures, deadzones)
+path = paths(zoo, capacity)
+with open('submission.txt','w') as f:
+    f.write(path.__str__()[1:-1])
