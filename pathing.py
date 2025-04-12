@@ -6,7 +6,7 @@ def distance (p1: Tuple[int, int], p2: Tuple[int, int]) -> float:
     return math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
 
 def paths(zoo):
-    paths = []
+    paths = [zoo.depot[:2]]
     fed = set()
 
     # sort by diet
@@ -18,11 +18,15 @@ def paths(zoo):
             continue
 
         nearestSource = min((fs for fs in zoo.storages if fs[3] == diet), key=lambda fs: distance(zoo.depot[:2], fs[:2]))
+        if paths[-1] != nearestSource[:2]:
+            paths.append(nearestSource[:2])
 
         for enc in enclosures:
-            paths.append([zoo.depot[:2], nearestSource[:2], enc[:2], zoo.depot[:2]])
+            paths.append(enc[:2])
             fed.add((enc[0], enc[1], enc[2]))   # adds to list of fed spots
-
+    
+    if paths[-1] != zoo.depot[:2]:
+        paths.append(zoo.depot[:2])
     # sorts by priority, then distance if priority is the same
     #for enc in sorted(zoo.enclosures, key = lambda e: (-e[3], distance(zoo.depot[:2], e[:2]))):
     #    if (enc[0], enc[1], enc[2]) in fed:     # checks if enclosure is fed
@@ -36,4 +40,4 @@ def paths(zoo):
 
     #fed.add((enc[0], enc[1], enc[2]))   # adds to list of fed spots
 
-    return paths
+    return [paths]
