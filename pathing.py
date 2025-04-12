@@ -6,7 +6,7 @@ def distance (p1: Tuple[int, int], p2: Tuple[int, int]) -> float:
     return math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
 
 def paths(zoo, capacity):
-    paths = [zoo.depot[:2]]
+    paths = []
     currentPath = []
     remaining = zoo.capacity
     fed = set()
