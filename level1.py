@@ -1,5 +1,5 @@
 from zoo import Zoo
-from drone import Drone
+from pathing import *
 with open("1.txt", 'r') as f:
     lines = [line.strip() for line in f.readlines() if line.strip()]
     storages = []
@@ -7,13 +7,13 @@ with open("1.txt", 'r') as f:
     deadzones = []
 
     # Parse dimensions
-    size = lines[0].strip()[1:-1].split(",")
+    size = list(map(int, lines[0].strip()[1:-1].split(",")))
 
     # Parse drone depot
-    depot = lines[1].strip()[1:-1].split(",")
+    depot = list(map(int,lines[1].strip()[1:-1].split(",")))
 
     # Parse battery capacity
-    capacity = int(lines[2].strip()[1:-1])
+    capacity = int(lines[2].strip())
 
     # Parse food storages
     storage = lines[3].strip()[1:-1]
@@ -22,7 +22,7 @@ with open("1.txt", 'r') as f:
             clean = fs.strip()[1:].replace(')', '')
             if clean:
                 fs = clean.split(',')
-                storages.append(fs)
+                storages.append([int(fs[0]), int(fs[1]), int(fs[2]), fs[3]])
 
     # Parse enclosures
     enclosure = lines[4].strip()[1:-1]
@@ -31,7 +31,7 @@ with open("1.txt", 'r') as f:
             clean = enc.strip()[1:].replace(')', '')
             if clean:
                 enc = clean.split(',')
-                enclosures.append(enc)
+                enclosures.append([int(enc[0]), int(enc[1]), int(enc[2]), float(enc[3]), enc[4]])
 
     # Parse deadzones
     deadzone = lines[5].strip()[1:-1]
@@ -40,37 +40,9 @@ with open("1.txt", 'r') as f:
             clean = dz.strip()[1:].replace(')', '')
             if clean:
                 dz = clean.split(',')
-                deadzones.append(dz)
+                deadzones.append([int(dz[0]), int(dz[1]), int(dz[2])])
                 
 zoo = Zoo(size, depot, storages, enclosures, deadzones)
-drone = Drone(depot, capacity)
-def find_closest_storage(storages, depot, food_type):
-    """
-    Finds the closest storage of a specified food type to the depot, ignoring height (z-coordinate).
-
-    :param storages: List of storages, where each storage is [x, y, z, food_type].
-    :param depot: List representing the depot coordinates [x, y, z].
-    :param food_type: The food type to search for (e.g., 'h', 'c', 'o').
-    :return: The closest storage as a list [x, y, z, food_type], or None if no storage matches the food type.
-    """
-    closest_storage = None
-    min_distance = float('inf')
-
-    for storage in storages:
-        if storage[3] == food_type:  # Check if the food type matches
-            # Calculate 2D Euclidean distance (ignoring height)
-            distance = ((int(storage[0]) - int(depot[0])) ** 2 + (int(storage[1]) - int(depot[1])) ** 2) ** 0.5
-            if distance < min_distance:
-                min_distance = distance
-                closest_storage = storage
-
-    return closest_storage
-# carnivores first
-_ = find_closest_storage(storages, depot, "c")
-drone.location = f"({_[0]},{_[1]})"
-drone_run = [f"({depot[0]},{depot[1]}),{drone.location}"]
-
-
-# omnivores second
-_ = find_closest_storage(storages, depot,"o")
-
+path = paths(zoo)
+with open('submission.txt','w') as f:
+    f.write(path.__str__()[1:-1])
