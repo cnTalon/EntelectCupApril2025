@@ -44,5 +44,8 @@ with open("1.txt", 'r') as f:
                 
 zoo = Zoo(size, depot, storages, enclosures, deadzones)
 path = paths(zoo)
-with open('submission.txt','w') as f:
-    f.write(path.__str__()[1:-1])
+str = path.__str__()[2:-2]
+str = str.replace("[","(")
+str = str.replace("]",")")
+with open("submission.txt",'w') as f:
+    f.write(f"[[{str}]]")
