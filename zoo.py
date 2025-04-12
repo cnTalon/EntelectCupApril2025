@@ -1,8 +1,7 @@
-class zoo:
-    def __init__(self,size,depot,capacity,storages,enclosures,deadzones):
+class Zoo:
+    def __init__(self,size,depot,storages,enclosures,deadzones):
         self.size = size
         self.depot = depot
-        self.capacity = capacity
         self.storages = storages
         self.enclosures = enclosures
         self.deadzones = deadzones
@@ -20,3 +19,5 @@ class zoo:
             
         for enclosure in enclosures:
             self.grid[enclosure[0]][enclosure[1]][enclosure[2]] = enclosure[4]
+            
+        # deadzones
