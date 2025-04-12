@@ -45,5 +45,9 @@ with open("2.txt", 'r') as f:
 zoo = Zoo(size, depot, capacity, storages, enclosures, deadzones)
 path = paths(zoo, capacity)
 
+for a in range(len(path)):
+    for b in range(len(path[a])):
+        for c in range(len(path[a][b])):
+            path[a][b][c] = tuple(path[a][b][c])
 with open('submission.txt','w') as f:
-    f.write(f"[[{str}]]")
+    f.write(path.__str__()[1:-1])
